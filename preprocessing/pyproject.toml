@@ -1,0 +1,12 @@
+[project]
+name = "preprocessing"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "langchain-text-splitters>=1.1.1",
+    "matplotlib>=3.10.8",
+    "numpy>=2.4.2",
+    "scikit-learn>=1.8.0",
+    "sentence-transformers>=5.2.3",
+]

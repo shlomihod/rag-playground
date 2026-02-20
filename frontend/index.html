@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RAG Visualization Demo</title>
+  <link rel="stylesheet" href="/src/styles.css" />
+</head>
+<body>
+  <!-- Loading overlay -->
+  <div id="loading-overlay">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <h2>Loading Embedding Model</h2>
+      <p id="loading-status">Initializing...</p>
+      <p class="loading-note">Model is cached after first download (~31 MB)</p>
+    </div>
+  </div>
+
+  <div id="app">
+    <div id="scatter-container">
+      <h1 class="scatter-title">Embedding Space</h1>
+      <div id="scatter-plot"></div>
+      <div id="legend"></div>
+    </div>
+
+    <div id="panel-container">
+      <h1 class="panel-title">RAG Pipeline</h1>
+
+      <!-- Pipeline strip -->
+      <div id="pipeline-strip">
+        <span class="pipeline-step" data-step="query">Query</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step" data-step="embed">Embed</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step" data-step="project">Project</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step" data-step="search">Search</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step" data-step="retrieve">Retrieve</span>
+        <span class="pipeline-arrow">→</span>
+        <span class="pipeline-step" data-step="augment">Augment</span>
+      </div>
+
+      <!-- Query input -->
+      <div id="query-section">
+        <div id="query-input-wrapper">
+          <input
+            type="text"
+            id="query-input"
+            placeholder="Type a query to explore embedding space..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button id="clear-query-btn" class="hidden" aria-label="Clear query">&times;</button>
+        </div>
+        <div id="example-queries">
+          <span class="example-chip">How did the Seahawks win Super Bowl LX?</span>
+          <span class="example-chip">What happened at the Olympics opening ceremony?</span>
+          <span class="example-chip">Who was named Super Bowl MVP?</span>
+          <span class="example-chip">Who performed at the halftime show?</span>
+          <span class="example-chip">Where are the 2026 Winter Olympics held?</span>
+        </div>
+      </div>
+
+      <!-- Embedding heatmaps -->
+      <div id="heatmap-section" class="hidden">
+        <h3>Embedding Vectors <span style="opacity:0.5">(384 dims)</span></h3>
+        <div id="heatmap-list"></div>
+      </div>
+
+      <!-- Results -->
+      <div id="results-section">
+        <h3>Retrieved Chunks <span id="results-count"></span></h3>
+        <div id="results-list"></div>
+      </div>
+
+      <!-- Augmented prompt -->
+      <div id="augmented-section" class="hidden">
+        <button id="augmented-toggle" class="section-toggle">
+          Augmented Prompt ▸
+        </button>
+        <pre id="augmented-prompt" class="hidden"></pre>
+
+        <!-- LLM Generation -->
+        <div id="generation-bar" class="hidden">
+          <div class="generation-settings">
+            <input
+              type="password"
+              id="api-key-input"
+              placeholder="OpenRouter API key"
+              autocomplete="off"
+            />
+            <input
+              type="text"
+              id="model-input"
+              value="google/gemma-3-4b-it"
+              autocomplete="off"
+            />
+            <button id="generate-btn" disabled>Generate</button>
+            <button id="clear-key-btn" class="hidden" title="Clear API key">✕</button>
+          </div>
+          <p id="generation-hint">Paste an OpenRouter API key to enable generation</p>
+        </div>
+        <div id="generation-outputs" class="hidden">
+          <div class="gen-block">
+            <span class="gen-label with-rag">With context (RAG)</span>
+            <div id="gen-with-rag" class="gen-output"></div>
+          </div>
+          <div class="gen-block">
+            <span class="gen-label no-rag">Without context</span>
+            <div id="gen-no-rag" class="gen-output"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div id="controls">
+        <label>
+          <input type="checkbox" id="heatmap-toggle" /> Show embedding heatmap
+        </label>
+        <span class="control-hint">Press Escape to reset</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
