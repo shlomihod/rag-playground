@@ -167,21 +167,23 @@ export function updateQueryPoint(x, y) {
     .attr('fill', 'var(--accent)')
     .attr('opacity', (d, i) => (i + 1) / trail.length * 0.3);
 
-  // Query point
-  const queryDot = queryGroup.selectAll('circle').data([{ cx, cy }]);
+  // Query point (square)
+  const size = 16;
+  const queryDot = queryGroup.selectAll('rect').data([{ cx, cy }]);
 
   queryDot.join(
-    enter => enter.append('circle')
-      .attr('cx', cx)
-      .attr('cy', cy)
-      .attr('r', 9)
-      .attr('fill', 'var(--accent)')
+    enter => enter.append('rect')
+      .attr('x', cx - size / 2)
+      .attr('y', cy - size / 2)
+      .attr('width', size)
+      .attr('height', size)
+      .attr('fill', 'white')
       .attr('filter', 'url(#query-glow)')
-      .attr('stroke', 'white')
+      .attr('stroke', 'var(--accent)')
       .attr('stroke-width', 2),
     update => update.transition().duration(TRANSITION_MS).ease(d3.easeCubicOut)
-      .attr('cx', cx)
-      .attr('cy', cy),
+      .attr('x', cx - size / 2)
+      .attr('y', cy - size / 2),
   );
 }
 
@@ -275,7 +277,7 @@ export function clearConnections() {
  */
 export function resetScatter() {
   clearConnections();
-  queryGroup.selectAll('circle').remove();
+  queryGroup.selectAll('rect').remove();
   trailGroup.selectAll('circle').remove();
   trail = [];
 }
