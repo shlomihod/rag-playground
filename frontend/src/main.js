@@ -23,9 +23,9 @@ let lastQuery = '';
 
 async function loadData() {
   const [chunksRes, embeddingsRes, pcaRes] = await Promise.all([
-    fetch('/data/chunks.json').then(r => r.json()),
-    fetch('/data/embeddings.json').then(r => r.json()),
-    fetch('/data/pca_model.json').then(r => r.json()),
+    fetch(`${import.meta.env.BASE_URL}data/chunks.json`).then(r => r.json()),
+    fetch(`${import.meta.env.BASE_URL}data/embeddings.json`).then(r => r.json()),
+    fetch(`${import.meta.env.BASE_URL}data/pca_model.json`).then(r => r.json()),
   ]);
   return { chunks: chunksRes, embeddings: embeddingsRes, pcaModel: pcaRes };
 }
